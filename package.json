@@ -14,5 +14,14 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^5.1.0"
-  }
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lacey-griffith/book-search.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lacey-griffith/book-search/issues"
+  },
+  "homepage": "https://github.com/lacey-griffith/book-search#readme"
 }
