@@ -17,16 +17,16 @@ const resolvers = {
         }
     },
     Mutation: {
-        login: async (parent, {username, password}) => {
-            const user = await User.findOne({ username })
+        login: async (parent, {email, password}) => {
+            const user = await User.findOne({ email })
 
             if(!user){
-                throw new AuthenticationError('Wrong username or password!')
+                throw new AuthenticationError('Wrong email or password!')
             }
 
             const validPassword = await user.isCorrectPassword(password)
             if(!validPassword){
-                throw new AuthenticationError('Wrong username or password!')
+                throw new AuthenticationError('Wrong email or password!')
             }
 
             const token = signToken(user)
@@ -37,22 +37,24 @@ const resolvers = {
             const token = signToken(user)
             return { user, token }
         },
-        saveBook: async (parent, args, context ) => {
+        saveBook: async (parent, { book }, context ) => {
+        console.log({book})
             if(context.user){
                 const updateUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: { savedBooks: args } },
+                    { $addToSet: { savedBooks: book } },
                     { new: true }
                     )
                 return updateUser
             }
             throw new  AuthenticationError('You need to log in before saving books!')
         },
-        removeBook: async (parent, args, context) => {
+        removeBook: async (parent, { bookId }, context) => {
+            console.log(bookId)
             if(context.user){
                 const updateUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $pull: { savedBooks: args } },
+                    { $pull: { savedBooks: { bookId: bookId } } },
                     { new: true }
                     )
                 return updateUser
