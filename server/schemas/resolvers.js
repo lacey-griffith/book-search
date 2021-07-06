@@ -36,6 +36,28 @@ const resolvers = {
             const user = await User.create(args)
             const token = signToken(user)
             return { user, token }
+        },
+        saveBook: async (parent, args, context ) => {
+            if(context.user){
+                const updateUser = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { $addToSet: { savedBooks: args } },
+                    { new: true }
+                    )
+                return updateUser
+            }
+            throw new  AuthenticationError('You need to log in before saving books!')
+        },
+        removeBook: async (parent, args, context) => {
+            if(context.user){
+                const updateUser = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { $pull: { savedBooks: args } },
+                    { new: true }
+                    )
+                return updateUser
+            }
+            throw new AuthenticationError('You need to log in before removing books!')
         }
     }
 }
