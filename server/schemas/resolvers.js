@@ -38,7 +38,7 @@ const resolvers = {
             return { user, token }
         },
         saveBook: async (parent, { book }, context ) => {
-        console.log({book})
+            console.log(book)
             if(context.user){
                 const updateUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
@@ -50,7 +50,6 @@ const resolvers = {
             throw new  AuthenticationError('You need to log in before saving books!')
         },
         removeBook: async (parent, { bookId }, context) => {
-            console.log(bookId)
             if(context.user){
                 const updateUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
